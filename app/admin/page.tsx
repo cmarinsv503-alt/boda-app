@@ -1,10 +1,4 @@
 'use client'
-tsx
-'use client'
-export const dynamic = 'force-dynamic' // <-- Agrega esta línea
-
-import { useState, useEffect } from 'react'
-// ... el resto de tus imports
 
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
@@ -18,13 +12,11 @@ export default function Admin() {
   const [fotos, setFotos] = useState<any[]>([])
   const [cargando, setCargando] = useState(false)
 
-  // Función para iniciar sesión
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setCargando(true)
     setError('')
 
-    // Buscamos el evento y comprobamos el código
     const { data, error } = await supabase.from('evento').select('*').single()
 
     if (error || !data) {
@@ -39,13 +31,11 @@ export default function Admin() {
     setCargando(false)
   }
 
-  // Función para cargar las fotos
   const cargarFotos = async () => {
     const { data } = await supabase.from('fotos').select('*').order('creado_en', { ascending: false })
     if (data) setFotos(data)
   }
 
-  // Función para abrir/cerrar el evento
   const toggleEvento = async () => {
     const nuevoEstado = evento.estado === 'abierto' ? 'cerrado' : 'abierto'
     const { error } = await supabase
@@ -58,26 +48,20 @@ export default function Admin() {
     }
   }
 
-  // Función para eliminar una foto
   const eliminarFoto = async (foto: any) => {
     if (!confirm('¿Seguro que quieres eliminar esta foto?')) return
 
-    // 1. Borrar de la base de datos
     await supabase.from('fotos').delete().eq('id', foto.id)
     
-    // 2. Borrar del Storage (opcional pero recomendado para no llenar el espacio)
-    // Extraemos el nombre del archivo de la URL
     const partesUrl = foto.url.split('/')
     const nombreArchivo = partesUrl[partesUrl.length - 1]
     const filePath = `${foto.invitado_id}/${nombreArchivo}`
     
     await supabase.storage.from('fotos-boda').remove([filePath])
 
-    // 3. Recargar la lista
     cargarFotos()
   }
 
-  // --- PANTALLA DE LOGIN ---
   if (!logueado) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
@@ -99,7 +83,6 @@ export default function Admin() {
     )
   }
 
-  // --- PANTALLA DEL DASHBOARD (YA LOGUEADO) ---
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-4xl mx-auto">
