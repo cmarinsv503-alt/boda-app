@@ -1,4 +1,10 @@
 'use client'
+tsx
+'use client'
+export const dynamic = 'force-dynamic' // <-- Agrega esta línea
+
+import { useState, useEffect } from 'react'
+// ... el resto de tus imports
 
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
