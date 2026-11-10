@@ -1,26 +1,59 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* Configuración básica de fuentes para Tailwind v4 */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-lato);
+  --font-serif: var(--font-playfair);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Quitamos el modo oscuro automático para que la app siempre se vea clara */
+body {
+  background-color: #faf8f5; /* Color crema elegante */
+  color: #292524; /* Gris oscuro */
+  font-family: var(--font-lato), sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* =========================================
+   ANIMACIONES DEL PROYECTOR
+   ========================================= */
+
+/* Efecto lento de zoom y aparición para las fotos */
+@keyframes cinematicZoom {
+  0% { 
+    opacity: 0; 
+    transform: scale(1.05); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: scale(1); 
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Efecto para que el mensaje suba suavemente */
+@keyframes slideUpFade {
+  0% { 
+    opacity: 0; 
+    transform: translate(-50%, 30px); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translate(-50%, 0); 
+  }
+}
+
+.animate-photo {
+  animation: cinematicZoom 2.5s ease-out forwards;
+}
+
+.animate-message {
+  /* Tarda 1.5s en aparecer, y empieza después de 0.8s */
+  animation: slideUpFade 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.8s forwards;
+  opacity: 0; 
+}
+
+/* Efecto para el texto del nombre si no hay mensaje */
+.animate-name {
+  animation: slideUpFade 1s ease-out 0.8s forwards;
+  opacity: 0;
 }
